@@ -1,40 +1,18 @@
+import uuid
+
 from pydantic import BaseModel
 
-from models.schemas.channel import ChannelMedium
-
-
-class UserSmall(BaseModel):
-    id: str
-    class Config:
-        orm_mode = True
-
-
-class UserMedium(BaseModel):
-    id: str
+class UserBase(BaseModel):
+    tag: str
     username: str
+    password: str
     email: str
-    class Config:
-        orm_mode = True
 
-class UserLarge(BaseModel):
-    id: str
-    username: str
-    email: str
-    tag: list
+class UserFull(UserBase):
+    id: uuid.UUID
     avatar: str
-    created_at: str
-    updated_at: str
-    class Config:
-        orm_mode = True
+    channels: list[str]
+    messages: list[str]
 
-class UserFull(BaseModel):
-    id: str
-    username: str
-    email: str
-    tag: list
-    channels: list[ChannelMedium]
-    avatar: str
-    created_at: str
-    updated_at: str
     class Config:
-        orm_mode = True
+        from_attributes = True

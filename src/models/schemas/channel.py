@@ -1,28 +1,26 @@
+import uuid
+
 from pydantic import BaseModel
-from sqlalchemy import UUID
-
-from models.schemas import UserMedium, UserSmall
-
 
 class ChannelSmall(BaseModel):
-    id: UUID
-    owner_id: [UserSmall]
+    id: uuid.UUID
+    owner_id: str
     class Config:
         orm_mode = True
 
 class ChannelMedium(BaseModel):
-    id: UUID
+    id: uuid.UUID
     name: str
-    owner_id: [UserMedium]
+    owner_id: str
     description: str
     class Config:
         orm_mode = True
 
 class ChannelLarge(BaseModel):
-    id: UUID
+    id: uuid.UUID
     name: str
     description: str
-    users: list[UserMedium]
+    users: list[str]
     avatar: str
     class Config:
         orm_mode = True

@@ -1,6 +1,6 @@
 import hashlib
 
-from models.schemas import UserFull
+from utils.validator import UserValidator
 
 
-def register(user, response, db):
+
