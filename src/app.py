@@ -9,9 +9,7 @@ import settings
 
 app = FastAPI(
     lifespan=main_app_lifespan,
-    **settings.AppSettings.__dict__
+    **settings.AppSettings.get_properties()
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(controllers.auth)
