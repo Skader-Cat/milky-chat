@@ -24,3 +24,6 @@ class ChannelLarge(BaseModel):
     avatar: str
     class Config:
         orm_mode = True
+
+#TODO: объединить ChannelSmall, ChannelMedium, ChannelLarge в одну модель
+#TODO: исправить циклическое наследование для UserFull и ChannelFull

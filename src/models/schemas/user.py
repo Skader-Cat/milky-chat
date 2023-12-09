@@ -1,22 +1,25 @@
 import enum
 import uuid
 from enum import Enum, auto
+from typing import Any, Dict, Optional
 
-from pydantic import BaseModel
+import pydantic.v1
+from pydantic import BaseModel, create_model, Field
 
-class EnumMixin:
-    pass
+from models.schemas import FieldCollectorMixin, ChannelLarge
+from models.tables import Channel
 
-class UserFull(BaseModel, EnumMixin):
+
+class UserFull(BaseModel, FieldCollectorMixin):
     id: uuid.UUID
     username: str
     email: str
     tag: str
     avatar: str
-    channels: list[str]
+    channels: list[ChannelLarge]
     messages: list[str]
     class Config:
         orm_mode = True
+        arbitrary_types_allowed = True
 
-    def __getattr__(self, item):
-        return item
+#TODO: исправить наследование для UserAuth

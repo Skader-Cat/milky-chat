@@ -3,15 +3,16 @@ from enum import Enum
 
 from pydantic import BaseModel
 
-from models.schemas.user import UserFull
+from models.schemas.user import UserFull, FieldCollectorMixin
 
 
 class UserAuth(UserFull):
     class Register(BaseModel):
         username: str
-        password: str
         email: str
+        password: str
+        id: uuid.UUID
 
     class Login(BaseModel):
-        email: str
+        username: str
         password: str

@@ -9,10 +9,12 @@ from views import UserAuth
 
 auth = APIRouter()
 
-@auth.get("/register", response_model=UserAuth.create_custom())
-async def register(response: Response, user: UserAuth.Register, db=Depends(get_async_db_session)):
-    return {"message": "Register Here"}
+@auth.get("/register", response_model=UserFull.create_custom(["id", "channels"]))
+async def register(response: Response, user: UserFull.create_custom(["username"]), db=Depends(get_async_db_session)):
+    return {"message": user.username}
 
 @auth.get("/login")
 async def login(response: Response, user: UserAuth.Login, db=Depends(get_async_db_session)):
     return {"message": "Login Here"}
+
+
