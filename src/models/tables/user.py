@@ -1,48 +1,20 @@
-from sqlalchemy import Column, Integer, String, UUID, DateTime
+import datetime
+import uuid
+
+from sqlalchemy import Column, UUID, String, DateTime
 from sqlalchemy.orm import Relationship
 
-from models.db import base
+from db import Base
 
 
-class User(base):
+class User(Base):
     __tablename__ = "users"
-
-    id = Column(UUID, primary_key=True, index=True)
-    name = Column(String)
-    email = Column(String)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    username = Column(String)
+    email = Column(String, unique=True, index=True)
+    role = Column(String)
     password = Column(String)
-    tag = Column(String)
-    messages = Relationship("Message", back_populates="user")
-    channels = Relationship("Channel", back_populates="user")
-    roles = Relationship("Role", back_populates="user")
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-
-    def __repr__(self):
-        return f"<User(id={self.id}, name={self.name}, email={self.email})>"
-
-
-class UserChannel(base):
-    __tablename__ = "user_channels"
-
-    id = Column(UUID, primary_key=True, index=True)
-    user_id = Column(UUID)
-    channel_id = Column(UUID)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-
-    def __repr__(self):
-        return f"<UserChannel(id={self.id}, user_id={self.user_id}, channel_id={self.channel_id})>"
-
-
-class UserMessages(base):
-    __tablename__ = "user_messages"
-
-    id = Column(UUID, primary_key=True, index=True)
-    user_id = Column(UUID)
-    message_id = Column(UUID)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-
-    def __repr__(self):
-        return f"<UserMessages(id={self.id}, user_id={self.user_id}, message_id={self.message_id})>"
+    avatar = Column(String)
+    chats = Relationship("Chat", secondary="user_chat", back_populates="users")
+    created_at = Column(DateTime, default=datetime.datetime.now())
+    updated_at = Column(DateTime, default=datetime.datetime.now())

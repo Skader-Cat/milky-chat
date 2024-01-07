@@ -1,20 +1,24 @@
-from fastapi import APIRouter, Depends
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, Response
 
-import service
-from dependencies import get_async_db_session
-from models.schemas.user import UserFull
-from views import UserAuth
+from service.auth import AuthManager
 
-auth = APIRouter()
-
-@auth.get("/register", response_model=UserFull.create_custom(["id", "channels"]))
-async def register(response: Response, user: UserFull.create_custom(["username"]), db=Depends(get_async_db_session)):
-    return {"message": user.username}
-
-@auth.get("/login")
-async def login(response: Response, user: UserAuth.Login, db=Depends(get_async_db_session)):
-    return {"message": "Login Here"}
+auth_router = APIRouter()
 
 
+@auth_router.post("/login")
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    user = await AuthManager.authenticate(form_data)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+
+    access_token = AuthManager.create_access_token(data={"id": str(user.id), "email": user.email})
+    return {"access_token": access_token, "token_type":"bearer"}
+
+@auth_router.post("/logout")
+async def logout(request: Request):
+    await AuthManager.logout(request)
+    return {"message": "Logged out"}

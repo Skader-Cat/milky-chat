@@ -1,14 +1,19 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-import models
+from starlette.staticfiles import StaticFiles
+
+from db import DatabaseManager, DB_Manager
 import settings
+from service import UserManager
 
 
 @asynccontextmanager
 async def main_app_lifespan(app: FastAPI):
-    engine, conn = await models.create_db_engine(settings)
-    app.state.engine = engine
-    app.state.conn = conn
+    await DB_Manager.create_db_engine(settings)
+    app.state.engine = DB_Manager.engine
+    app.state.db = await DB_Manager.get_session()
+
+    UserManager.db = app.state.db
 
     try:
         yield
