@@ -1,4 +1,3 @@
-from .user import User, UserChannel, UserMessages
-from .channel import Channel, ChannelMessage
+from .user import User
 from .message import Message
-from .role import Role
+from .chat import Chat, UserChat

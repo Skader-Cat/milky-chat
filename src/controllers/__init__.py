@@ -1,2 +1,4 @@
-from .chat import chat
-from .auth import auth
+from .auth import AuthRouter
+from .user import UsersRouter
+from .chat import ChatRouter
+from .socket import socket_router

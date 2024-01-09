@@ -1,25 +1,49 @@
-import enum
-import uuid
-from enum import Enum, auto
-from typing import Any, Dict, Optional
+from typing import Optional
 
-import pydantic.v1
-from pydantic import BaseModel, create_model, Field
+from pydantic import BaseModel
+from uuid import UUID
 
-from models.schemas import FieldCollectorMixin, ChannelLarge
-from models.tables import Channel
-
-
-class UserFull(BaseModel, FieldCollectorMixin):
-    id: uuid.UUID
-    username: str
+class UserResponse(BaseModel):
+    id: UUID
     email: str
-    tag: str
-    avatar: str
-    channels: list[ChannelLarge]
-    messages: list[str]
-    class Config:
-        orm_mode = True
-        arbitrary_types_allowed = True
+    username: str
+    avatar: Optional[str]
+    role: str
 
-#TODO: исправить наследование для UserAuth
+class UserResponseSmall(BaseModel):
+    id: UUID
+    username: str
+    avatar: Optional[str]
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserCreate(BaseModel):
+    email: str
+    username: str
+    password: str
+    avatar: Optional[str]
+
+class UserUpdate(BaseModel):
+    username: Optional[str]
+    password: Optional[str]
+    avatar: Optional[str]
+
+class UserFull(BaseModel):
+    id: UUID
+    username: str
+    password: str
+    email: str
+    role: str
+    avatar: Optional[str]
+
+class UserListResponse(BaseModel):
+    users: list[UserResponse]
+    total: int
+    page: int
+    size: int
+
+
+
+

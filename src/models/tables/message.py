@@ -1,17 +1,17 @@
-from sqlalchemy import Column, UUID, DateTime, String
+import datetime
+import uuid
 
-from models.db import base
+from sqlalchemy import Column, ForeignKey, UUID, String, DateTime
+
+from db import Base
 
 
-class Message(base):
+class Message (Base):
     __tablename__ = "messages"
-
-    id = Column(UUID, primary_key=True, index=True)
-    content = Column(String)
-    user_id = Column(UUID)
-    channel_id = Column(UUID)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
-
-    def __repr__(self):
-        return f"<Message(id={self.id}, content={self.content}, user_id={self.user_id}, channel_id={self.channel_id})>"
+    id = Column(UUID, primary_key=True, default=uuid.uuid4)
+    text = Column(String)
+    chat_id = Column(UUID, ForeignKey("chats.id"))
+    user_id = Column(UUID, ForeignKey("users.id"))
+    created_at = Column(DateTime, default=datetime.datetime.now())
+    updated_at = Column(DateTime, default=datetime.datetime.now())
+    parent_id = Column(UUID, ForeignKey("messages.id"), nullable=True)

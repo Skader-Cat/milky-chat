@@ -1,4 +1,4 @@
-from models.db import AsyncSessionLocal
+from db import AsyncSessionLocal
 
 
 def get_async_db_session():
