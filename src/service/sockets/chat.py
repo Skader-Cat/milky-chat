@@ -60,7 +60,7 @@ class ChatSocketManager(SocketManager):
         await super().broadcast_message(cls.room_connections[message["room_id"]],
                                         JSONEncoder().encode({"type": "message",
                                                               "user_id": str(current_user.id),
-                                                              "created_at": datetime.datetime.now(),
+                                                              "created_at": str(datetime.datetime.now()),
                                                               "room_id": message["room_id"],
                                                               "message": message["text"]}))
 

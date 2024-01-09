@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from models.schemas import ChatRoomResponse, UserResponse
 from models.schemas.chat import MessageResponse
@@ -84,6 +84,11 @@ class ChatManager(Manager):
             "created_at": datetime.datetime.now()
         }
         await cls.create(UserChat, user_chat)
+
+    @classmethod
+    async def remove_user_from_chat_room(cls, chat_room_id, user_id):
+        query = delete(UserChat).where(UserChat.user_id == user_id).where(UserChat.chat_id == chat_room_id)
+        await cls._execute_query_and_close(query)
 
 
     @classmethod

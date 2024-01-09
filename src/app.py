@@ -21,8 +21,7 @@ app.add_middleware(CORSMiddleware,
                    max_age=settings.CORSSettings.MAX_AGE
                    )
 
-app.include_router(controllers.auth_router, prefix="/auth", tags=["auth"])
-app.include_router(controllers.users_router, prefix="/users", tags=["users"])
-app.include_router(controllers.category_router, prefix="/category", tags=["category"])
-app.include_router(controllers.chat_router, prefix="/chats", tags=["chats"])
+app.include_router(controllers.AuthRouter().router, prefix="/auth", tags=["auth"])
+app.include_router(controllers.UsersRouter().router, prefix="/users", tags=["users"])
+app.include_router(controllers.ChatRouter().router, prefix="/chats", tags=["chats"])
 app.include_router(controllers.socket_router, prefix="/socket", tags=["socket"])

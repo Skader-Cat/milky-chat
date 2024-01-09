@@ -42,6 +42,7 @@ class ChatRoomResponse(BaseModel):
 class ChatRoomSmallResponse(BaseModel):
     id: UUID
     name: str
+    description: str
     avatar: str
     created_at: datetime.datetime
     updated_at: datetime.datetime
